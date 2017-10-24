@@ -1,5 +1,6 @@
 package br.com.devdojo.examgenerator.bean.login;
 
+import br.com.devdojo.examgenerator.custom.CustomURLEncoder;
 import br.com.devdojo.examgenerator.persistence.dao.LoginDAO;
 import br.com.devdojo.examgenerator.persistence.model.Token;
 
@@ -30,19 +31,24 @@ public class LoginBean implements Serializable {
 
     public String login() throws UnsupportedEncodingException {
         Token token = loginDAO.loginReturningToken("william", "devdojo");
-        return token == null ? null : addTokenAndExpirationTimeToCookiesAndReturnIndex(token);
+        if (token == null) return null;
+        addTokenAndExpirationTimeToCookies(token.getToken(), token.getExpirationTime().toString());
+        return "index.xhtml?faces-redirect=true";
     }
 
-    public String logout(){
-        externalContext.addResponseCookie("token",null,null);
-        externalContext.addResponseCookie("expirationTime",null,null);
+    public String logout() {
+        removeTokenAndExpirationTimeFromCookies();
         return "login.xhtml?faces-redirect=true";
     }
 
-    private String addTokenAndExpirationTimeToCookiesAndReturnIndex(Token token) throws UnsupportedEncodingException {
-        externalContext.addResponseCookie("token", URLEncoder.encode(token.getToken(), "UTF-8"), null);
-        externalContext.addResponseCookie("expirationTime", token.getExpirationTime().toString(), null);
-        return "index.xhtml?faces-redirect=true";
+
+    private void addTokenAndExpirationTimeToCookies(String token, String expirationTime) {
+        externalContext.addResponseCookie("token", CustomURLEncoder.encodeUTF8(token), null);
+        externalContext.addResponseCookie("expirationTime", expirationTime, null);
+    }
+
+    private void removeTokenAndExpirationTimeFromCookies() {
+        addTokenAndExpirationTimeToCookies(null, null);
     }
 
     public String getUsername() {
