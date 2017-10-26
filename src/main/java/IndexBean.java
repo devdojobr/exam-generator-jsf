@@ -1,5 +1,5 @@
 import br.com.devdojo.examgenerator.persistence.dao.LoginDAO;
-import br.com.devdojo.examgenerator.persistence.model.Token;
+import br.com.devdojo.examgenerator.persistence.model.support.Token;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
