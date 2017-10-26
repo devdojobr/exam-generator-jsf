@@ -1,6 +1,6 @@
 package br.com.devdojo.examgenerator.bean.login;
 
-import br.com.devdojo.examgenerator.custom.CustomURLEncoder;
+import br.com.devdojo.examgenerator.custom.CustomURLEncoderDecoder;
 import br.com.devdojo.examgenerator.persistence.dao.LoginDAO;
 import br.com.devdojo.examgenerator.persistence.model.support.Token;
 
@@ -41,7 +41,7 @@ public class LoginBean implements Serializable {
     }
 
     private void addTokenAndExpirationTimeToCookies(String token, String expirationTime) {
-        externalContext.addResponseCookie("token", CustomURLEncoder.encodeUTF8(token), null);
+        externalContext.addResponseCookie("token", CustomURLEncoderDecoder.encodeUTF8(token), null);
         externalContext.addResponseCookie("expirationTime", expirationTime, null);
     }
 
