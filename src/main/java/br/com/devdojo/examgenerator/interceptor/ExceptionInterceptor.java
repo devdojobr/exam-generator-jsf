@@ -4,6 +4,7 @@ import br.com.devdojo.examgenerator.annotation.ExceptionHandler;
 import br.com.devdojo.examgenerator.custom.CustomObjectMapper;
 import br.com.devdojo.examgenerator.persistence.model.support.ErrorDetail;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 
 import javax.faces.application.FacesMessage;
@@ -35,7 +36,7 @@ public class ExceptionInterceptor implements Serializable {
         try {
             result = context.proceed();
         } catch (Exception e) {
-            if (e instanceof HttpClientErrorException) {
+            if (e instanceof HttpClientErrorException || e instanceof HttpServerErrorException) {
                 HttpStatusCodeException httpException = (HttpStatusCodeException) e;
                 ErrorDetail errorDetail = new CustomObjectMapper().readValue(httpException.getResponseBodyAsString(), ErrorDetail.class);
                 addMessage(FacesMessage.SEVERITY_ERROR, errorDetail.getMessage(), true);
