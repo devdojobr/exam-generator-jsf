@@ -1,5 +1,6 @@
 package br.com.devdojo.examgenerator.persistence.dao;
 
+import br.com.devdojo.examgenerator.annotation.ExceptionHandler;
 import br.com.devdojo.examgenerator.custom.CustomObjectMapper;
 import br.com.devdojo.examgenerator.custom.CustomRestRemplate;
 import br.com.devdojo.examgenerator.persistence.model.support.ErrorDetail;
@@ -28,22 +29,11 @@ public class LoginDAO implements Serializable {
         this.restTemplate = restTemplate;
     }
 
+    @ExceptionHandler
     public Token loginReturningToken(String username, String password) {
         String loginJson = "{\"username\":" + addQuotes(username) + ",\"password\":" + addQuotes(password) + "}";
-        try {
-            ResponseEntity<Token> tokenExchange = restTemplate.exchange(BASE_URL, POST, new HttpEntity<>(loginJson, createJsonHeader()), Token.class);
-            return tokenExchange.getBody();
-        } catch (HttpClientErrorException e) {
-            try {
-                ErrorDetail errorDetail = new CustomObjectMapper().readValue(e.getResponseBodyAsString(), ErrorDetail.class);
-                System.out.println(errorDetail);
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-            System.out.println(e.getResponseBodyAsString());
-            e.printStackTrace();
-        }
-        return null;
+        ResponseEntity<Token> tokenExchange = restTemplate.exchange(BASE_URL, POST, new HttpEntity<>(loginJson, createJsonHeader()), Token.class);
+        return tokenExchange.getBody();
     }
 
     @SuppressWarnings("StringBufferReplaceableByString")
