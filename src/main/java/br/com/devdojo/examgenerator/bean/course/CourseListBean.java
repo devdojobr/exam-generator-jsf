@@ -17,7 +17,8 @@ import java.util.List;
 @ViewScoped
 public class CourseListBean implements Serializable {
     private final CourseDAO courseDAO;
-    private String name;
+    private List<Course> courseList;
+    private String name = "";
 
     @Inject
     public CourseListBean(CourseDAO courseDAO) {
@@ -26,8 +27,19 @@ public class CourseListBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        List<Course> list = courseDAO.list("");
-        System.out.println(list);
+        search();
+    }
+
+    public void search() {
+        courseList = courseDAO.list(name);
+    }
+
+    public List<Course> getCourseList() {
+        return courseList;
+    }
+
+    public void setCourseList(List<Course> courseList) {
+        this.courseList = courseList;
     }
 
     public String getName() {

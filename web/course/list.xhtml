@@ -1,0 +1,21 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+                template="../WEB-INF/templates/template.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <h:panelGrid columns="2">
+            <h:form>
+                <p:inputText value="#{courseListBean.name}"/>
+                <p:commandButton actionListener="#{courseListBean.search}"
+                                 ajax="true" update="dataTable" icon="ui-icon-search"/>
+            </h:form>
+        </h:panelGrid>
+        <p:dataTable value="#{courseListBean.courseList}"
+                     var="course" id="dataTable">
+            <p:column headerText="Course name">
+                <h:outputText value="#{course.name}"/>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

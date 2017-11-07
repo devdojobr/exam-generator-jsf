@@ -4,10 +4,12 @@
                 template="WEB-INF/templates/template.xhtml"
                 xmlns:p="http://primefaces.org/ui">
     <ui:define name="content">
+        <h:panelGrid columns="1">
+            <h:link value="Courses" outcome="course/list"/>
+        </h:panelGrid>
         <h:form>
             <h:commandButton value="logout" action="#{loginBean.logout}"/>
             <h:commandButton value="call professor" action="#{indexBean.checkProfessor}"/>
-            <h:outputText value="#{courseListBean.name}"/>
         </h:form>
     </ui:define>
 </ui:composition>
