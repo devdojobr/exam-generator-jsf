@@ -5,6 +5,7 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * @author William Suane for DevDojo on 10/26/17.
+ * * Without CustomRestRemplate class the @Inject for resttemplate will not work
  */
 public class CustomRestRemplate extends RestTemplate{
     public CustomRestRemplate(){

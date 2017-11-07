@@ -1,5 +1,6 @@
 package br.com.devdojo.examgenerator.util;
 
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
@@ -30,6 +31,10 @@ public class JsonUtil implements Serializable {
         Cookie tokenCookie = (Cookie) cookieMap.get("token");
         header.add("Authorization", decodeUTF8(tokenCookie.getValue()));
         return header;
+    }
+
+    public HttpEntity tokenizedHttpEntityHeader() {
+        return new HttpEntity(createTokenizedHeader());
     }
 
 }
