@@ -37,4 +37,9 @@ public class JsonUtil implements Serializable {
         return new HttpEntity(createTokenizedHeader());
     }
 
+    public <E> HttpEntity<E> tokenizedHttpEntityHeader(E e) {
+        return new HttpEntity<>(e,createTokenizedHeader());
+    }
+
+
 }

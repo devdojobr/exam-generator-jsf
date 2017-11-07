@@ -38,6 +38,7 @@ public class ExceptionInterceptor implements Serializable {
         } catch (Exception e) {
             if (e instanceof HttpClientErrorException || e instanceof HttpServerErrorException) {
                 HttpStatusCodeException httpException = (HttpStatusCodeException) e;
+                String responseBodyAsString = httpException.getResponseBodyAsString();
                 ErrorDetail errorDetail = new CustomObjectMapper().readValue(httpException.getResponseBodyAsString(), ErrorDetail.class);
                 addMessage(FacesMessage.SEVERITY_ERROR, errorDetail.getMessage(), true);
             } else {

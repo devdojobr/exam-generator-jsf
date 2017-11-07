@@ -4,17 +4,22 @@
                 template="../WEB-INF/templates/template.xhtml"
                 xmlns:p="http://primefaces.org/ui">
     <ui:define name="content">
-        <h:panelGrid columns="2">
-            <h:form>
+        <h:form>
+            <h:panelGrid columns="2">
                 <p:inputText value="#{courseListBean.name}"/>
                 <p:commandButton actionListener="#{courseListBean.search}"
                                  ajax="true" update="dataTable" icon="ui-icon-search"/>
-            </h:form>
-        </h:panelGrid>
+            </h:panelGrid>
+        </h:form>
         <p:dataTable value="#{courseListBean.courseList}"
                      var="course" id="dataTable">
             <p:column headerText="Course name">
                 <h:outputText value="#{course.name}"/>
+            </p:column>
+            <p:column headerText="Edit">
+                <h:link value="edit" outcome="edit">
+                    <f:param name="id" value="#{course.id}"/>
+                </h:link>
             </p:column>
         </p:dataTable>
     </ui:define>
