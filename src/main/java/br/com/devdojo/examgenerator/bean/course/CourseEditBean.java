@@ -3,6 +3,7 @@ package br.com.devdojo.examgenerator.bean.course;
 import br.com.devdojo.examgenerator.annotation.ExceptionHandler;
 import br.com.devdojo.examgenerator.persistence.dao.CourseDAO;
 import br.com.devdojo.examgenerator.persistence.model.Course;
+import org.omnifaces.util.Messages;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -31,6 +32,7 @@ public class CourseEditBean implements Serializable {
     @ExceptionHandler
     public String update() {
         courseDAO.update(course);
+        Messages.create("The course {0} was successfully updated.", course.getName()).flash().add();
         return "list.xhtml?faces-redirect=true";
     }
 

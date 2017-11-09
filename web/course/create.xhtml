@@ -10,6 +10,9 @@
                 <p:outputLabel value="Name" for="name"/>
                 <p:inputText value="#{courseRegisterBean.course.name}" id="name" required="true"
                              requiredMessage="Name is required"/>
+            </h:panelGrid>
+            <h:panelGrid columns="2">
+                <p:link outcome="list"><p:button value="Cancel"/></p:link>
                 <p:commandButton value="Save" action="#{courseRegisterBean.save}"/>
             </h:panelGrid>
         </o:form>

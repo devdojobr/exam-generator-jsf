@@ -4,6 +4,7 @@ import br.com.devdojo.examgenerator.annotation.ExceptionHandler;
 import br.com.devdojo.examgenerator.custom.CustomObjectMapper;
 import br.com.devdojo.examgenerator.persistence.model.support.ErrorDetail;
 import br.com.devdojo.examgenerator.persistence.model.support.Errors;
+import org.omnifaces.util.Messages;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -41,8 +42,7 @@ public class ExceptionInterceptor implements Serializable {
             result = context.proceed();
         } catch (Exception e) {
             if (e instanceof HttpClientErrorException || e instanceof HttpServerErrorException) {
-                String errorMessage = defineErrorMessage((HttpStatusCodeException) e);
-                addMessage(FacesMessage.SEVERITY_ERROR, errorMessage, false);
+                Messages.addGlobalError(defineErrorMessage((HttpStatusCodeException) e));
             } else {
                 e.printStackTrace();
             }
@@ -57,12 +57,5 @@ public class ExceptionInterceptor implements Serializable {
                         .stream()
                         .map(Errors::getDefaultMessage)
                         .collect(joining(","));
-    }
-
-    private void addMessage(FacesMessage.Severity severity, String msg, boolean keepMessages) {
-        final FacesMessage facesMessage = new FacesMessage(severity, msg, "");
-        if(keepMessages) externalContext.getFlash().setKeepMessages(true);
-        externalContext.getFlash().setRedirect(true);
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
     }
 }

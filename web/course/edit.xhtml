@@ -14,6 +14,9 @@
             <h:panelGrid columns="1">
                 <p:outputLabel value="Name" for="name"/>
                 <p:inputText value="#{courseEditBean.course.name}" id="name" required="true" requiredMessage="Name is required"/>
+            </h:panelGrid>
+            <h:panelGrid columns="2">
+                <p:link outcome="list"><p:button value="Cancel"/></p:link>
                 <p:commandButton value="Update" action="#{courseEditBean.update}"/>
             </h:panelGrid>
         </o:form>

@@ -5,6 +5,7 @@
                 xmlns:p="http://primefaces.org/ui">
     <ui:define name="content">
         <h:form>
+            <h:link value="Create course" outcome="create"/>
             <h:panelGrid columns="2">
                 <p:inputText value="#{courseListBean.name}"/>
                 <p:commandButton actionListener="#{courseListBean.search}"
