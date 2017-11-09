@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author William Suane for DevDojo on 10/26/17.
@@ -18,6 +19,16 @@ public class ErrorDetail {
     private String message;
     private String path;
     private String exception;
+    @JsonProperty("errors")
+    private List<Errors> errorsList;
+
+    public List<Errors> getErrorsList() {
+        return errorsList;
+    }
+
+    public void setErrorsList(List<Errors> errorsList) {
+        this.errorsList = errorsList;
+    }
 
     public String getException() {
         return exception;
