@@ -15,16 +15,14 @@ import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.List;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpMethod.PUT;
+import static org.springframework.http.HttpMethod.*;
 
 /**
  * @author William Suane for DevDojo on 11/7/17.
  */
 public class CourseDAO implements Serializable {
     private final String LIST_URL = ApiUtil.BASE_URL + "/professor/course/list";
-    private final String FIND_ONE_URL = ApiUtil.BASE_URL + "/professor/course/{id}";
+    private final String DELETE_OR_FIND_ONE_URL = ApiUtil.BASE_URL + "/professor/course/{id}";
     private final String CREATE_UPDATE_URL = ApiUtil.BASE_URL + "/professor/course/";
     private final CustomRestRemplate restRemplate;
     private final JsonUtil jsonUtil;
@@ -46,7 +44,7 @@ public class CourseDAO implements Serializable {
 
     @ExceptionHandler
     public Course findOne(long id) {
-        return restRemplate.exchange(FIND_ONE_URL, GET, jsonUtil.tokenizedHttpEntityHeader(), Course.class, id).getBody();
+        return restRemplate.exchange(DELETE_OR_FIND_ONE_URL, GET, jsonUtil.tokenizedHttpEntityHeader(), Course.class, id).getBody();
     }
 
     public Course update(Course course) {
@@ -59,5 +57,11 @@ public class CourseDAO implements Serializable {
 
     private Course createOrUpdate(HttpMethod httpMethod, Course course) {
         return restRemplate.exchange(CREATE_UPDATE_URL, httpMethod, jsonUtil.tokenizedHttpEntityHeader(course), Course.class).getBody();
+    }
+
+    public void delete(Course course) {
+        restRemplate.exchange(DELETE_OR_FIND_ONE_URL, DELETE,
+                jsonUtil.tokenizedHttpEntityHeader(course),
+                Course.class, course.getId());
     }
 }

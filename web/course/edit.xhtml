@@ -15,10 +15,17 @@
                 <p:outputLabel value="Name" for="name"/>
                 <p:inputText value="#{courseEditBean.course.name}" id="name" required="true" requiredMessage="Name is required"/>
             </h:panelGrid>
-            <h:panelGrid columns="2">
+            <h:panelGrid columns="3">
                 <p:link outcome="list"><p:button value="Cancel"/></p:link>
+                <p:commandButton value="Delete" action="#{courseEditBean.delete}">
+                    <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
+                </p:commandButton>
                 <p:commandButton value="Update" action="#{courseEditBean.update}"/>
             </h:panelGrid>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
         </o:form>
     </ui:define>
 </ui:composition>

@@ -36,6 +36,13 @@ public class CourseEditBean implements Serializable {
         return "list.xhtml?faces-redirect=true";
     }
 
+    @ExceptionHandler
+    public String delete() {
+        courseDAO.delete(course);
+        Messages.create("The course {0} was successfully deleted.", course.getName()).flash().add();
+        return "list.xhtml?faces-redirect=true";
+    }
+
     public long getId() {
         return id;
     }
