@@ -16,13 +16,20 @@
                 <p:inputText value="#{questionEditBean.question.title}" id="title" required="true"
                              requiredMessage="Title is required"/>
             </h:panelGrid>
-            <h:panelGrid columns="2">
+            <h:panelGrid columns="3">
                 <p:link outcome="list">
                     <p:button value="Cancel"/>
                     <f:param name="courseId" value="#{questionEditBean.question.course.id}"/>
                 </p:link>
-                <p:commandButton value="Save" action="#{questionEditBean.update}"/>
+                <p:commandButton value="Delete" action="#{questionEditBean.delete}">
+                    <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:commandButton value="Update" action="#{questionEditBean.update}"/>
             </h:panelGrid>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
         </o:form>
     </ui:define>
 </ui:composition>
