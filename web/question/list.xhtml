@@ -26,11 +26,11 @@
             <p:column headerText="Question title">
                 <h:outputText value="#{question.title}"/>
             </p:column>
-            <!--<p:column headerText="Edit">-->
-                <!--<h:link value="edit" outcome="edit">-->
-                    <!--<f:param name="id" value="#{course.id}"/>-->
-                <!--</h:link>-->
-            <!--</p:column>-->
+            <p:column headerText="Edit">
+                <h:link value="edit" outcome="edit">
+                    <f:param name="questionId" value="#{question.id}"/>
+                </h:link>
+            </p:column>
         </p:dataTable>
     </ui:define>
 </ui:composition>
