@@ -1,6 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:o="http://omnifaces.org/ui"
                 template="../WEB-INF/templates/template.xhtml"
                 xmlns:p="http://primefaces.org/ui">
     <ui:define name="content">
@@ -9,15 +10,17 @@
                          requiredMessage="Use the links to get here"/>
             <f:viewAction action="#{questionListBean.init}"/>
         </f:metadata>
-        <h:form>
+        <o:form id="form" includeRequestParams="true">
             <h3><h:outputText value="Course: #{questionListBean.course.name}"/></h3>
-            <!--<h:link value="Create course" outcome="create"/>-->
+            <h:link value="Create question" outcome="create">
+                <f:param name="courseId" value="#{questionListBean.courseId}"/>
+            </h:link>
             <h:panelGrid columns="2">
                 <p:inputText value="#{questionListBean.title}"/>
                 <p:commandButton actionListener="#{questionListBean.search}"
                                  ajax="true" update="dataTable" icon="ui-icon-search"/>
             </h:panelGrid>
-        </h:form>
+        </o:form>
         <p:dataTable value="#{questionListBean.questionList}"
                      var="question" id="dataTable">
             <p:column headerText="Question title">
