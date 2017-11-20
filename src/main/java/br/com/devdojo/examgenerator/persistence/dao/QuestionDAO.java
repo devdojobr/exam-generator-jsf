@@ -35,14 +35,12 @@ public class QuestionDAO implements Serializable {
         this.questionList = questionList;
     }
 
-    @ExceptionHandler
     public List<Question> list(long courseId, String title) {
         UriComponents url = UriComponentsBuilder.fromUriString(LIST_URL).queryParam("title", title).build();
         ResponseEntity<List<Question>> exchange = restRemplate.exchange(url.toUriString(), GET, jsonUtil.tokenizedHttpEntityHeader(), questionList.typeReference(), courseId);
         return exchange.getBody();
     }
 
-    @ExceptionHandler
     public Question findOne(long id) {
         return restRemplate.exchange(DELETE_OR_FIND_ONE_URL, GET, jsonUtil.tokenizedHttpEntityHeader(), Question.class, id).getBody();
     }

@@ -31,6 +31,11 @@
                     <f:param name="questionId" value="#{question.id}"/>
                 </h:link>
             </p:column>
+            <p:column headerText="Choices">
+                <h:link value="choices" outcome="/choice/choices">
+                    <f:param name="questionId" value="#{question.id}"/>
+                </h:link>
+            </p:column>
         </p:dataTable>
     </ui:define>
 </ui:composition>

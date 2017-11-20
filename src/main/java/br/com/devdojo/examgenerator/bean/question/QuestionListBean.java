@@ -1,5 +1,6 @@
 package br.com.devdojo.examgenerator.bean.question;
 
+import br.com.devdojo.examgenerator.annotation.ExceptionHandler;
 import br.com.devdojo.examgenerator.persistence.dao.CourseDAO;
 import br.com.devdojo.examgenerator.persistence.dao.QuestionDAO;
 import br.com.devdojo.examgenerator.persistence.model.Course;
@@ -29,7 +30,7 @@ public class QuestionListBean implements Serializable {
         this.questionDAO = questionDAO;
         this.courseDAO = courseDAO;
     }
-
+    @ExceptionHandler
     public void init() {
         course = courseDAO.findOne(courseId);
         search();
