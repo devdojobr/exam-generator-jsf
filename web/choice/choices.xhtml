@@ -15,8 +15,10 @@
             <h:panelGrid columns="1">
                 <h:outputLabel value="Title"/>
                 <p:inputText value="#{choiceBean.choice.title}"/>
-                <!--<p:commandButton actionListener="#{questionListBean.search}"-->
-                                 <!--ajax="true" update="dataTable" icon="ui-icon-search"/>-->
+                <h:outputLabel value="Is this the correct answer?"/>
+                <p:selectBooleanButton  value="#{choiceBean.choice.correctAnswer}" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close"/>
+                <p:commandButton value="Create choice" actionListener="#{choiceBean.save}"
+                                 ajax="true" update="form dataTable" />
             </h:panelGrid>
         </o:form>
         <p:dataTable value="#{choiceBean.choiceList}"

@@ -5,6 +5,7 @@ import br.com.devdojo.examgenerator.persistence.dao.ChoiceDAO;
 import br.com.devdojo.examgenerator.persistence.dao.QuestionDAO;
 import br.com.devdojo.examgenerator.persistence.model.Choice;
 import br.com.devdojo.examgenerator.persistence.model.Question;
+import org.omnifaces.util.Messages;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -20,7 +21,7 @@ import java.util.List;
 public class ChoiceBean implements Serializable {
     private final ChoiceDAO choiceDAO;
     private final QuestionDAO questionDAO;
-    private Choice choice = new Choice();
+    private Choice choice;
     private Question question;
     private List<Choice> choiceList;
     private long questionId;
@@ -30,10 +31,28 @@ public class ChoiceBean implements Serializable {
         this.choiceDAO = choiceDAO;
         this.questionDAO = questionDAO;
     }
+
     @ExceptionHandler
-    public void init(){
+    public void init() {
         question = questionDAO.findOne(questionId);
+        buildChoiceWithQuestion();
+        search();
+    }
+
+    @ExceptionHandler
+    public void save() {
+        Choice choice = choiceDAO.create(this.choice);
+        buildChoiceWithQuestion();
+        search();
+        Messages.addGlobalInfo("The choice {0} was successfully added.", choice.getTitle());
+    }
+
+    private void search() {
         choiceList = choiceDAO.list(questionId);
+    }
+
+    private void buildChoiceWithQuestion() {
+        choice = Choice.Builder.newChoice().question(question).build();
     }
 
     public Choice getChoice() {
