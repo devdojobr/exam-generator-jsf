@@ -1,11 +1,10 @@
 package br.com.devdojo.examgenerator.persistence.dao;
 
-import br.com.devdojo.examgenerator.annotation.ExceptionHandler;
 import br.com.devdojo.examgenerator.custom.CustomRestRemplate;
-import br.com.devdojo.examgenerator.custom.CustomTypeReference;
 import br.com.devdojo.examgenerator.persistence.model.Question;
 import br.com.devdojo.examgenerator.util.ApiUtil;
 import br.com.devdojo.examgenerator.util.JsonUtil;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponents;
@@ -26,18 +25,18 @@ public class QuestionDAO implements Serializable {
     private final String CREATE_UPDATE_URL = ApiUtil.BASE_URL + "/professor/course/question";
     private final CustomRestRemplate restRemplate;
     private final JsonUtil jsonUtil;
-    private final CustomTypeReference<List<Question>> questionList;
+    private final ParameterizedTypeReference<List<Question>> questionListTypeReference = new ParameterizedTypeReference<List<Question>>() {
+    };
 
     @Inject
-    public QuestionDAO(CustomRestRemplate restRemplate, JsonUtil jsonUtil, CustomTypeReference<List<Question>> questionList) {
+    public QuestionDAO(CustomRestRemplate restRemplate, JsonUtil jsonUtil) {
         this.restRemplate = restRemplate;
         this.jsonUtil = jsonUtil;
-        this.questionList = questionList;
     }
 
     public List<Question> list(long courseId, String title) {
         UriComponents url = UriComponentsBuilder.fromUriString(LIST_URL).queryParam("title", title).build();
-        ResponseEntity<List<Question>> exchange = restRemplate.exchange(url.toUriString(), GET, jsonUtil.tokenizedHttpEntityHeader(), questionList.typeReference(), courseId);
+        ResponseEntity<List<Question>> exchange = restRemplate.exchange(url.toUriString(), GET, jsonUtil.tokenizedHttpEntityHeader(), questionListTypeReference, courseId);
         return exchange.getBody();
     }
 
