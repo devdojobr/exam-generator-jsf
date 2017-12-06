@@ -18,6 +18,11 @@
         <ui:insert name="content">
 
         </ui:insert>
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage name="/images/loader.gif" />
+        </p:dialog>
     </div>
     <div id="footer">
 
