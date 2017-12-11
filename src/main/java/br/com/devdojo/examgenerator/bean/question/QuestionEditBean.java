@@ -1,9 +1,7 @@
 package br.com.devdojo.examgenerator.bean.question;
 
 import br.com.devdojo.examgenerator.annotation.ExceptionHandler;
-import br.com.devdojo.examgenerator.persistence.dao.CourseDAO;
 import br.com.devdojo.examgenerator.persistence.dao.QuestionDAO;
-import br.com.devdojo.examgenerator.persistence.model.Course;
 import br.com.devdojo.examgenerator.persistence.model.Question;
 import org.omnifaces.util.Messages;
 
@@ -41,7 +39,7 @@ public class QuestionEditBean implements Serializable {
     @ExceptionHandler
     public String delete() {
         questionDAO.delete(question);
-        Messages.create("The course {0} was successfully deleted.", question.getTitle()).flash().add();
+        Messages.create("The question {0} was successfully deleted.", question.getTitle()).flash().add();
         return "list.xhtml?faces-redirect=true&courseId=" + question.getCourse().getId();
     }
     public Question getQuestion() {

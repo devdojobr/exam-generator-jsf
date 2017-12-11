@@ -27,6 +27,11 @@
                     <f:param name="courseId" value="#{course.id}"/>
                 </h:link>
             </p:column>
+            <p:column headerText="Assignments">
+                <h:link value="assignments" outcome="/assignment/list">
+                    <f:param name="courseId" value="#{course.id}"/>
+                </h:link>
+            </p:column>
         </p:dataTable>
     </ui:define>
 </ui:composition>

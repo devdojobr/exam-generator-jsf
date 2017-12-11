@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:o="http://omnifaces.org/ui"
+                template="../WEB-INF/templates/template.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <f:metadata>
+            <f:viewParam name="courseId" value="#{assignmentListBean.courseId}" required="true"
+                         requiredMessage="Use the links to get here"/>
+            <f:viewAction action="#{assignmentListBean.init}"/>
+        </f:metadata>
+        <o:form id="form" includeRequestParams="true">
+            <h3><h:outputText value="Course: #{assignmentListBean.course.name}"/></h3>
+            <h:link value="Create assignment" outcome="create">
+                <f:param name="courseId" value="#{assignmentListBean.courseId}"/>
+            </h:link>
+            <h:panelGrid columns="2">
+                <p:inputText value="#{assignmentListBean.title}"/>
+                <p:commandButton actionListener="#{assignmentListBean.search}"
+                                 ajax="true" update="dataTable" icon="ui-icon-search"/>
+            </h:panelGrid>
+        </o:form>
+        <p:dataTable value="#{assignmentListBean.assignmentList}"
+                     var="assignment" id="dataTable">
+            <p:column headerText="Assigment title">
+                <h:outputText value="#{assignment.title}"/>
+            </p:column>
+            <p:column headerText="Edit">
+                <h:link value="edit" outcome="edit">
+                    <f:param name="assignmentId" value="#{assignment.id}"/>
+                </h:link>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+                template="../WEB-INF/templates/template.xhtml"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <f:metadata>
+            <f:viewParam name="courseId" value="#{assignmentRegisterBean.courseId}" required="true"
+                         requiredMessage="Use the links to get here"/>
+            <f:viewAction action="#{assignmentRegisterBean.init}"/>
+        </f:metadata>
+        <o:form id="form" includeRequestParams="true">
+            <h:panelGrid columns="1">
+                <p:outputLabel value="Title" for="title"/>
+                <p:inputText value="#{assignmentRegisterBean.assignment.title}" id="title" required="true"
+                             requiredMessage="Title is required"/>
+            </h:panelGrid>
+            <h:panelGrid columns="2">
+                <p:link outcome="list">
+                    <p:button value="Cancel"/>
+                    <f:param name="courseId" value="#{assignmentRegisterBean.courseId}"/>
+                </p:link>
+                <p:commandButton value="Save" actionListener="#{assignmentRegisterBean.save}" update="form"/>
+            </h:panelGrid>
+        </o:form>
+    </ui:define>
+</ui:composition>
