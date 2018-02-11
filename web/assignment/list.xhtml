@@ -31,6 +31,12 @@
                     <f:param name="assignmentId" value="#{assignment.id}"/>
                 </h:link>
             </p:column>
+            <p:column headerText="Exam">
+                <h:link value="Create exam" outcome="/questionassignment/list">
+                    <f:param name="assignmentId" value="#{assignment.id}"/>
+                    <f:param name="courseId" value="#{assignmentListBean.courseId}"/>
+                </h:link>
+            </p:column>
         </p:dataTable>
     </ui:define>
 </ui:composition>
