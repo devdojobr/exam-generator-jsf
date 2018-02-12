@@ -17,9 +17,10 @@
             <h:panelGrid columns="1">
                 <h:outputLabel value="Available questions"/>
                 <p:selectOneMenu id="questionDropDown"
-                                value="#{questionAssignmentBean.selectedQuestion}"
+                                 value="#{questionAssignmentBean.selectedQuestion}"
                                  required="true"
-                                 requiredMessage="Please select one question">
+                                 requiredMessage="Please select one question"
+                                 converter="entityConverter">
                     <f:selectItem value="#{null}" itemLabel="Select one question"/>
                     <f:selectItems value="#{questionAssignmentBean.availableQuestionList}"
                                    var="question" itemLabel="#{question.title}" itemValue="#{question}"/>
@@ -33,9 +34,9 @@
                     <h:outputText value="#{questionAssignment.question.title}"/>
                 </p:column>
                 <!--<p:column headerText="Edit">-->
-                    <!--<h:link value="edit" outcome="edit">-->
-                        <!--<f:param name="assignmentId" value="#{assignment.id}"/>-->
-                    <!--</h:link>-->
+                <!--<h:link value="edit" outcome="edit">-->
+                <!--<f:param name="assignmentId" value="#{assignment.id}"/>-->
+                <!--</h:link>-->
                 <!--</p:column>-->
             </p:dataTable>
         </o:form>
