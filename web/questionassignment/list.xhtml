@@ -8,9 +8,25 @@
         <f:metadata>
             <f:viewParam name="assignmentId" value="#{questionAssignmentBean.assignmentId}" required="true"
                          requiredMessage="Use the links to get here"/>
+            <f:viewParam name="courseId" value="#{questionAssignmentBean.courseId}" required="true"
+                         requiredMessage="Use the links to get here"/>
             <f:viewAction action="#{questionAssignmentBean.init}"/>
         </f:metadata>
         <o:form id="form" includeRequestParams="true">
+            <h3><h:outputText value="Assignment: #{questionAssignmentBean.assignment.title}"/></h3>
+            <h:panelGrid columns="1">
+                <h:outputLabel value="Available questions"/>
+                <p:selectOneMenu id="questionDropDown"
+                                value="#{questionAssignmentBean.selectedQuestion}"
+                                 required="true"
+                                 requiredMessage="Please select one question">
+                    <f:selectItem value="#{null}" itemLabel="Select one question"/>
+                    <f:selectItems value="#{questionAssignmentBean.availableQuestionList}"
+                                   var="question" itemLabel="#{question.title}" itemValue="#{question}"/>
+                </p:selectOneMenu>
+                <p:commandButton value="Add question" ajax="true" update="questionDropDown dataTable"
+                                 actionListener="#{questionAssignmentBean.associateQuestion}"/>
+            </h:panelGrid>
             <p:dataTable value="#{questionAssignmentBean.questionAssignmentList}"
                          var="questionAssignment" id="dataTable">
                 <p:column headerText="Question title">
