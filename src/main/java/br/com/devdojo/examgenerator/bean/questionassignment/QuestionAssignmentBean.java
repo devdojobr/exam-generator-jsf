@@ -5,6 +5,7 @@ import br.com.devdojo.examgenerator.persistence.dao.QuestionAssignmentDAO;
 import br.com.devdojo.examgenerator.persistence.model.Assignment;
 import br.com.devdojo.examgenerator.persistence.model.Question;
 import br.com.devdojo.examgenerator.persistence.model.QuestionAssignment;
+import org.omnifaces.util.Messages;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -20,7 +21,7 @@ import java.util.List;
 public class QuestionAssignmentBean implements Serializable {
     private List<QuestionAssignment> questionAssignmentList;
     private List<Question> availableQuestionList;
-    private Question selectedQuestion;
+    private QuestionAssignment questionAssignment;
     private Assignment assignment;
     private long assignmentId;
     private long courseId;
@@ -37,27 +38,49 @@ public class QuestionAssignmentBean implements Serializable {
         questionAssignmentList = questionAssignmentDAO.listQuestionAssignment(assignmentId);
         availableQuestionList = questionAssignmentDAO.listAvailableQuestions(courseId, assignmentId);
         assignment = assignmentDAO.findOne(assignmentId);
+        createNewQuestionAssignmentInstance();
+    }
+
+    private void createNewQuestionAssignmentInstance() {
+        questionAssignment = QuestionAssignment.Builder.newQuestionAssignment().assignment(assignment).build();
     }
 
     public void associateQuestion() {
-        QuestionAssignment questionAssignment = QuestionAssignment
-                .Builder
-                .newQuestionAssignment()
-                .assignment(assignment)
-                .question(selectedQuestion)
-                .grade(0)
-                .build();
-        updateQuestionAssignmentList(questionAssignmentDAO.associateQuestionToAssignment(questionAssignment));
-        updateAvailableQuestionList();
+        addQuestionAssignmentToQuestionAssignmentList(questionAssignmentDAO.associateQuestionToAssignment(questionAssignment));
+        removeQuestionFromAvailableQuestionList(this.questionAssignment);
     }
 
-    private void updateQuestionAssignmentList(QuestionAssignment questionAssignment) {
+    private void addQuestionAssignmentToQuestionAssignmentList(QuestionAssignment questionAssignment) {
         questionAssignmentList.add(questionAssignment);
     }
 
-    private void updateAvailableQuestionList() {
-        availableQuestionList.remove(selectedQuestion);
-        selectedQuestion = null;
+    private void removeQuestionAssignmentFromQuestionAssignmentList(QuestionAssignment questionAssignment) {
+        questionAssignmentList.remove(questionAssignment);
+    }
+
+    private void removeQuestionFromAvailableQuestionList(QuestionAssignment questionAssignment) {
+        availableQuestionList.remove(questionAssignment.getQuestion());
+    }
+
+    private void addQuestionToAvailableQuestionList(QuestionAssignment questionAssignment) {
+        availableQuestionList.add(questionAssignment.getQuestion());
+    }
+
+    public void delete(QuestionAssignment questionAssignment){
+        questionAssignmentDAO.delete(questionAssignment);
+        addQuestionToAvailableQuestionList(questionAssignment);
+        removeQuestionAssignmentFromQuestionAssignmentList(questionAssignment);
+        createNewQuestionAssignmentInstance();
+        Messages.addGlobalInfo("The choice {0} was successfully deleted.", questionAssignment.getQuestion().getTitle());
+
+    }
+
+    public QuestionAssignment getQuestionAssignment() {
+        return questionAssignment;
+    }
+
+    public void setQuestionAssignment(QuestionAssignment questionAssignment) {
+        this.questionAssignment = questionAssignment;
     }
 
     public List<QuestionAssignment> getQuestionAssignmentList() {
@@ -90,14 +113,6 @@ public class QuestionAssignmentBean implements Serializable {
 
     public void setAvailableQuestionList(List<Question> availableQuestionList) {
         this.availableQuestionList = availableQuestionList;
-    }
-
-    public Question getSelectedQuestion() {
-        return selectedQuestion;
-    }
-
-    public void setSelectedQuestion(Question selectedQuestion) {
-        this.selectedQuestion = selectedQuestion;
     }
 
     public Assignment getAssignment() {

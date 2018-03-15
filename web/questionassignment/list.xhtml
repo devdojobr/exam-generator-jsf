@@ -17,7 +17,7 @@
             <h:panelGrid columns="1">
                 <h:outputLabel value="Available questions"/>
                 <p:selectOneMenu id="questionDropDown"
-                                 value="#{questionAssignmentBean.selectedQuestion}"
+                                 value="#{questionAssignmentBean.questionAssignment.question}"
                                  required="true"
                                  requiredMessage="Please select one question"
                                  converter="entityConverter">
@@ -25,6 +25,7 @@
                     <f:selectItems value="#{questionAssignmentBean.availableQuestionList}"
                                    var="question" itemLabel="#{question.title}" itemValue="#{question}"/>
                 </p:selectOneMenu>
+                <p:inputNumber value="#{questionAssignmentBean.questionAssignment.grade}"/>
                 <p:commandButton value="Add question" ajax="true" update="questionDropDown dataTable"
                                  actionListener="#{questionAssignmentBean.associateQuestion}"/>
             </h:panelGrid>
@@ -33,12 +34,22 @@
                 <p:column headerText="Question title">
                     <h:outputText value="#{questionAssignment.question.title}"/>
                 </p:column>
+                <p:column style="width:32px">
+                    <p:commandLink  action="#{questionAssignmentBean.delete(questionAssignment)}" immediate="true" update="form">
+                        <i class="fa fa-trash-o"/>
+                        <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
+                    </p:commandLink>
+                </p:column>
                 <!--<p:column headerText="Edit">-->
                 <!--<h:link value="edit" outcome="edit">-->
                 <!--<f:param name="assignmentId" value="#{assignment.id}"/>-->
                 <!--</h:link>-->
                 <!--</p:column>-->
             </p:dataTable>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
         </o:form>
     </ui:define>
 </ui:composition>

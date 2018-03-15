@@ -13,8 +13,7 @@ import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.List;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 
 /**
  * @author William Suane for DevDojo on 11/02/2018.
@@ -23,6 +22,7 @@ public class QuestionAssignmentDAO implements Serializable{
     private final String LIST_QUESTION_ASSIGNMENT_URL = ApiUtil.BASE_URL + "/professor/course/assignment/questionassignment/{assignmentId}";
     private final String LIST_AVAILABLE_QUESTIONS_URL = ApiUtil.BASE_URL + "/professor/course/assignment/questionassignment/{courseId}/{assignmentId}";
     private final String CREATE_UPDATE_URL = ApiUtil.BASE_URL + "/professor/course/assignment/questionassignment/";
+    private final String DELETE_URL = ApiUtil.BASE_URL + "/professor/course/assignment/questionassignment/{questionAssignmentId}";
     private final CustomRestRemplate restRemplate;
     private final JsonUtil jsonUtil;
     private final ParameterizedTypeReference<List<QuestionAssignment>> questionAssignmentListTypeReference = new ParameterizedTypeReference<List<QuestionAssignment>>() {
@@ -45,6 +45,13 @@ public class QuestionAssignmentDAO implements Serializable{
         ResponseEntity<List<Question>> exchange = restRemplate.exchange(LIST_AVAILABLE_QUESTIONS_URL, GET, jsonUtil.tokenizedHttpEntityHeader(), questionListTypeReference,courseId, assignmentId);
         return exchange.getBody();
     }
+
+    public void delete(QuestionAssignment questionAssignment) {
+        restRemplate.exchange(DELETE_URL, DELETE,
+                jsonUtil.tokenizedHttpEntityHeader(questionAssignment),
+                QuestionAssignment.class, questionAssignment.getId());
+    }
+
     public QuestionAssignment associateQuestionToAssignment(QuestionAssignment questionAssignment) {
         return createOrUpdate(POST, questionAssignment);
     }
