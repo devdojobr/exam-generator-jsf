@@ -26,25 +26,35 @@
                                    var="question" itemLabel="#{question.title}" itemValue="#{question}"/>
                 </p:selectOneMenu>
                 <p:inputNumber value="#{questionAssignmentBean.questionAssignment.grade}"/>
-                <p:commandButton value="Add question" ajax="true" update="questionDropDown dataTable"
+                <p:commandButton value="Add question" ajax="true" update="form"
                                  actionListener="#{questionAssignmentBean.associateQuestion}"/>
             </h:panelGrid>
+
+            <p:remoteCommand name="onRowEdit" update="dataTable" process="dataTable"/>
             <p:dataTable value="#{questionAssignmentBean.questionAssignmentList}"
-                         var="questionAssignment" id="dataTable">
+                         var="questionAssignment" id="dataTable"
+                         editable="true">
+                <p:ajax event="rowEdit" listener="#{questionAssignmentBean.onRowEditUpdateQuestionAssignment}" oncomplete="onRowEdit()"/>
+
                 <p:column headerText="Question title">
                     <h:outputText value="#{questionAssignment.question.title}"/>
                 </p:column>
+
+                <p:column headerText="Question grade">
+                    <p:cellEditor>
+                        <f:facet name="output"> <h:outputText value="#{questionAssignment.grade}"/> </f:facet>
+                        <f:facet name="input"> <p:inputNumber value="#{questionAssignment.grade}"/> </f:facet>
+                    </p:cellEditor>
+                </p:column>
                 <p:column style="width:32px">
-                    <p:commandLink  action="#{questionAssignmentBean.delete(questionAssignment)}" immediate="true" update="form">
+                    <p:rowEditor />
+                </p:column>
+                <p:column style="width:32px">
+                    <p:commandLink  action="#{questionAssignmentBean.delete(questionAssignment)}" process="@this" update="form">
                         <i class="fa fa-trash-o"/>
                         <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
                     </p:commandLink>
                 </p:column>
-                <!--<p:column headerText="Edit">-->
-                <!--<h:link value="edit" outcome="edit">-->
-                <!--<f:param name="assignmentId" value="#{assignment.id}"/>-->
-                <!--</h:link>-->
-                <!--</p:column>-->
             </p:dataTable>
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />

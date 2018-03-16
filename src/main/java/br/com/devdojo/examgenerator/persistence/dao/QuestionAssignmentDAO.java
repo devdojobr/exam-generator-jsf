@@ -56,6 +56,10 @@ public class QuestionAssignmentDAO implements Serializable{
         return createOrUpdate(POST, questionAssignment);
     }
 
+    public QuestionAssignment update(QuestionAssignment questionAssignment) {
+        return createOrUpdate(PUT, questionAssignment);
+    }
+
     private QuestionAssignment createOrUpdate(HttpMethod httpMethod, QuestionAssignment questionAssignment) {
         return restRemplate.exchange(CREATE_UPDATE_URL, httpMethod, jsonUtil.tokenizedHttpEntityHeader(questionAssignment), QuestionAssignment.class).getBody();
     }
