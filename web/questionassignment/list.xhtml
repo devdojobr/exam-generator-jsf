@@ -55,6 +55,9 @@
                         <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
                     </p:commandLink>
                 </p:column>
+                <f:facet name="footer">
+                    The sum of all grades is: #{questionAssignmentBean.questionAssignmentList.stream().map(questionAssignment -> questionAssignment.grade).sum()}
+                </f:facet>
             </p:dataTable>
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
