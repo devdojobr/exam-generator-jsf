@@ -26,6 +26,9 @@
             <p:column headerText="Assigment title">
                 <h:outputText value="#{assignment.title}"/>
             </p:column>
+            <p:column headerText="Access code">
+                <h:outputText value="#{assignment.accessCode}"/>
+            </p:column>
             <p:column headerText="Edit">
                 <h:link value="edit" outcome="edit">
                     <f:param name="assignmentId" value="#{assignment.id}"/>
