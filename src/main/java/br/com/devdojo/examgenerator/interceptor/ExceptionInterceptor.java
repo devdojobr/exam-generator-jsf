@@ -9,16 +9,13 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.joining;
 
@@ -42,12 +39,19 @@ public class ExceptionInterceptor implements Serializable {
             result = context.proceed();
         } catch (Exception e) {
             if (e instanceof HttpClientErrorException || e instanceof HttpServerErrorException) {
-                Messages.addGlobalError(defineErrorMessage((HttpStatusCodeException) e));
+                HttpStatusCodeException httpException = (HttpStatusCodeException) e;
+                Messages.addGlobalError(defineErrorMessage(httpException));
+                redirectToAccessDenied(httpException.getRawStatusCode());
             } else {
                 e.printStackTrace();
             }
         }
         return result;
+    }
+
+    private void redirectToAccessDenied(int statusCode) throws IOException {
+        if(statusCode == 403 || statusCode == 401)
+            externalContext.redirect("/denied.xhtml");
     }
 
     private String defineErrorMessage(HttpStatusCodeException e) throws IOException {
