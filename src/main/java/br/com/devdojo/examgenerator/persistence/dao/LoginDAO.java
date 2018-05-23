@@ -1,7 +1,7 @@
 package br.com.devdojo.examgenerator.persistence.dao;
 
 import br.com.devdojo.examgenerator.annotation.ExceptionHandler;
-import br.com.devdojo.examgenerator.custom.CustomRestRemplate;
+import br.com.devdojo.examgenerator.custom.CustomRestTemplate;
 import br.com.devdojo.examgenerator.persistence.model.support.Token;
 import br.com.devdojo.examgenerator.util.JsonUtil;
 import org.springframework.http.HttpEntity;
@@ -17,11 +17,11 @@ import static org.springframework.http.HttpMethod.POST;
  * @author William Suane for DevDojo on 10/20/17.
  */
 public class LoginDAO implements Serializable {
-    private final CustomRestRemplate restTemplate;
+    private final CustomRestTemplate restTemplate;
     private final JsonUtil jsonUtil;
 
     @Inject
-    public LoginDAO(CustomRestRemplate restTemplate, JsonUtil jsonUtil) {
+    public LoginDAO(CustomRestTemplate restTemplate, JsonUtil jsonUtil) {
         this.restTemplate = restTemplate;
         this.jsonUtil = jsonUtil;
     }

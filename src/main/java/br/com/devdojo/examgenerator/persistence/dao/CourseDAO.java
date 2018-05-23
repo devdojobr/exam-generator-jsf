@@ -1,7 +1,7 @@
 package br.com.devdojo.examgenerator.persistence.dao;
 
 import br.com.devdojo.examgenerator.annotation.ExceptionHandler;
-import br.com.devdojo.examgenerator.custom.CustomRestRemplate;
+import br.com.devdojo.examgenerator.custom.CustomRestTemplate;
 import br.com.devdojo.examgenerator.persistence.model.Course;
 import br.com.devdojo.examgenerator.util.ApiUtil;
 import br.com.devdojo.examgenerator.util.JsonUtil;
@@ -24,27 +24,27 @@ public class CourseDAO implements Serializable {
     private final String LIST_URL = ApiUtil.BASE_URL + "/professor/course/list";
     private final String DELETE_OR_FIND_ONE_URL = ApiUtil.BASE_URL + "/professor/course/{id}";
     private final String CREATE_UPDATE_URL = ApiUtil.BASE_URL + "/professor/course/";
-    private final CustomRestRemplate restRemplate;
+    private final CustomRestTemplate restTemplate;
     private final JsonUtil jsonUtil;
     private final ParameterizedTypeReference<List<Course>> courseListTypeReference = new ParameterizedTypeReference<List<Course>>() {
     };
 
     @Inject
-    public CourseDAO(CustomRestRemplate restRemplate, JsonUtil jsonUtil) {
-        this.restRemplate = restRemplate;
+    public CourseDAO(CustomRestTemplate restTemplate, JsonUtil jsonUtil) {
+        this.restTemplate = restTemplate;
         this.jsonUtil = jsonUtil;
     }
 
     @ExceptionHandler
     public List<Course> list(String name) {
         UriComponents url = UriComponentsBuilder.fromUriString(LIST_URL).queryParam("name", name).build();
-        ResponseEntity<List<Course>> exchange = restRemplate.exchange(url.toUriString(), GET, jsonUtil.tokenizedHttpEntityHeader(), courseListTypeReference);
+        ResponseEntity<List<Course>> exchange = restTemplate.exchange(url.toUriString(), GET, jsonUtil.tokenizedHttpEntityHeader(), courseListTypeReference);
         return exchange.getBody();
     }
 
     @ExceptionHandler
     public Course findOne(long id) {
-        return restRemplate.exchange(DELETE_OR_FIND_ONE_URL, GET, jsonUtil.tokenizedHttpEntityHeader(), Course.class, id).getBody();
+        return restTemplate.exchange(DELETE_OR_FIND_ONE_URL, GET, jsonUtil.tokenizedHttpEntityHeader(), Course.class, id).getBody();
     }
 
     public Course update(Course course) {
@@ -56,11 +56,11 @@ public class CourseDAO implements Serializable {
     }
 
     private Course createOrUpdate(HttpMethod httpMethod, Course course) {
-        return restRemplate.exchange(CREATE_UPDATE_URL, httpMethod, jsonUtil.tokenizedHttpEntityHeader(course), Course.class).getBody();
+        return restTemplate.exchange(CREATE_UPDATE_URL, httpMethod, jsonUtil.tokenizedHttpEntityHeader(course), Course.class).getBody();
     }
 
     public void delete(Course course) {
-        restRemplate.exchange(DELETE_OR_FIND_ONE_URL, DELETE,
+        restTemplate.exchange(DELETE_OR_FIND_ONE_URL, DELETE,
                 jsonUtil.tokenizedHttpEntityHeader(course),
                 Course.class, course.getId());
     }

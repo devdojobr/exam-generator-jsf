@@ -1,6 +1,6 @@
 package br.com.devdojo.examgenerator.persistence.dao;
 
-import br.com.devdojo.examgenerator.custom.CustomRestRemplate;
+import br.com.devdojo.examgenerator.custom.CustomRestTemplate;
 import br.com.devdojo.examgenerator.persistence.model.Assignment;
 import br.com.devdojo.examgenerator.util.ApiUtil;
 import br.com.devdojo.examgenerator.util.JsonUtil;
@@ -23,25 +23,25 @@ public class AssignmentDAO implements Serializable {
     private final String LIST_URL = ApiUtil.BASE_URL + "/professor/course/assignment/list/{courseId}/";
     private final String DELETE_OR_FIND_ONE_URL = ApiUtil.BASE_URL + "/professor/course/assignment/{id}";
     private final String CREATE_UPDATE_URL = ApiUtil.BASE_URL + "/professor/course/assignment";
-    private final CustomRestRemplate restRemplate;
+    private final CustomRestTemplate restTemplate;
     private final JsonUtil jsonUtil;
     private final ParameterizedTypeReference<List<Assignment>> assignmentListTypeReference = new ParameterizedTypeReference<List<Assignment>>() {
     };
 
     @Inject
-    public AssignmentDAO(CustomRestRemplate restRemplate, JsonUtil jsonUtil) {
-        this.restRemplate = restRemplate;
+    public AssignmentDAO(CustomRestTemplate restTemplate, JsonUtil jsonUtil) {
+        this.restTemplate = restTemplate;
         this.jsonUtil = jsonUtil;
     }
 
     public List<Assignment> list(long courseId, String title) {
         UriComponents url = UriComponentsBuilder.fromUriString(LIST_URL).queryParam("title", title).build();
-        ResponseEntity<List<Assignment>> exchange = restRemplate.exchange(url.toUriString(), GET, jsonUtil.tokenizedHttpEntityHeader(), assignmentListTypeReference, courseId);
+        ResponseEntity<List<Assignment>> exchange = restTemplate.exchange(url.toUriString(), GET, jsonUtil.tokenizedHttpEntityHeader(), assignmentListTypeReference, courseId);
         return exchange.getBody();
     }
 
     public Assignment findOne(long id) {
-        return restRemplate.exchange(DELETE_OR_FIND_ONE_URL, GET, jsonUtil.tokenizedHttpEntityHeader(), Assignment.class, id).getBody();
+        return restTemplate.exchange(DELETE_OR_FIND_ONE_URL, GET, jsonUtil.tokenizedHttpEntityHeader(), Assignment.class, id).getBody();
     }
 
     public Assignment update(Assignment assignment) {
@@ -53,11 +53,11 @@ public class AssignmentDAO implements Serializable {
     }
 
     private Assignment createOrUpdate(HttpMethod httpMethod, Assignment assignment) {
-        return restRemplate.exchange(CREATE_UPDATE_URL, httpMethod, jsonUtil.tokenizedHttpEntityHeader(assignment), Assignment.class).getBody();
+        return restTemplate.exchange(CREATE_UPDATE_URL, httpMethod, jsonUtil.tokenizedHttpEntityHeader(assignment), Assignment.class).getBody();
     }
 
     public void delete(Assignment assignment) {
-        restRemplate.exchange(DELETE_OR_FIND_ONE_URL, DELETE,
+        restTemplate.exchange(DELETE_OR_FIND_ONE_URL, DELETE,
                 jsonUtil.tokenizedHttpEntityHeader(assignment),
                 Assignment.class, assignment.getId());
     }

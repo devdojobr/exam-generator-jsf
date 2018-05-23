@@ -25,7 +25,7 @@ public class ExamBean implements Serializable {
     }
 
     public void init(){
-        Map<Question, List<Choice>> list = examDAO.list(1234);
+        Map<Question, List<Choice>> list = examDAO.list("1234");
         System.out.println(list);
     }
 }

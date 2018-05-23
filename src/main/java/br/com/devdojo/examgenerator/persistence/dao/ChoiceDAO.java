@@ -1,8 +1,7 @@
 package br.com.devdojo.examgenerator.persistence.dao;
 
-import br.com.devdojo.examgenerator.custom.CustomRestRemplate;
+import br.com.devdojo.examgenerator.custom.CustomRestTemplate;
 import br.com.devdojo.examgenerator.persistence.model.Choice;
-import br.com.devdojo.examgenerator.persistence.model.Question;
 import br.com.devdojo.examgenerator.util.ApiUtil;
 import br.com.devdojo.examgenerator.util.JsonUtil;
 import org.springframework.core.ParameterizedTypeReference;
@@ -22,19 +21,19 @@ public class ChoiceDAO implements Serializable {
     private final String LIST_URL = ApiUtil.BASE_URL + "/professor/course/question/choice/list/{questionId}/";
     private final String DELETE_OR_FIND_ONE_URL = ApiUtil.BASE_URL + "/professor/course/question/choice/{id}";
     private final String CREATE_UPDATE_URL = ApiUtil.BASE_URL + "/professor/course/question/choice";
-    private final CustomRestRemplate restRemplate;
+    private final CustomRestTemplate restTemplate;
     private final JsonUtil jsonUtil;
     private final ParameterizedTypeReference<List<Choice>> choiceListTypeReference = new ParameterizedTypeReference<List<Choice>>() {
     };
 
     @Inject
-    public ChoiceDAO(CustomRestRemplate restRemplate, JsonUtil jsonUtil) {
-        this.restRemplate = restRemplate;
+    public ChoiceDAO(CustomRestTemplate restTemplate, JsonUtil jsonUtil) {
+        this.restTemplate = restTemplate;
         this.jsonUtil = jsonUtil;
     }
 
     public List<Choice> list(long questionId) {
-        ResponseEntity<List<Choice>> exchange = restRemplate.exchange(LIST_URL, GET, jsonUtil.tokenizedHttpEntityHeader(),
+        ResponseEntity<List<Choice>> exchange = restTemplate.exchange(LIST_URL, GET, jsonUtil.tokenizedHttpEntityHeader(),
                 choiceListTypeReference, questionId);
         return exchange.getBody();
     }
@@ -48,10 +47,10 @@ public class ChoiceDAO implements Serializable {
     }
 
     private Choice createOrUpdate(HttpMethod httpMethod, Choice choice) {
-        return restRemplate.exchange(CREATE_UPDATE_URL, httpMethod, jsonUtil.tokenizedHttpEntityHeader(choice), Choice.class).getBody();
+        return restTemplate.exchange(CREATE_UPDATE_URL, httpMethod, jsonUtil.tokenizedHttpEntityHeader(choice), Choice.class).getBody();
     }
     public void delete(Choice choice) {
-        restRemplate.exchange(DELETE_OR_FIND_ONE_URL, DELETE,
+        restTemplate.exchange(DELETE_OR_FIND_ONE_URL, DELETE,
                 jsonUtil.tokenizedHttpEntityHeader(choice),
                 Choice.class, choice.getId());
     }
