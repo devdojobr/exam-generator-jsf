@@ -12,6 +12,15 @@ public class Token implements Serializable {
     private String token;
     @JsonProperty("exp")
     private LocalDateTime expirationTime;
+    private String accessType;
+
+    public String getAccessType() {
+        return accessType;
+    }
+
+    public void setAccessType(String accessType) {
+        this.accessType = accessType;
+    }
 
     public String getToken() {
         return token;

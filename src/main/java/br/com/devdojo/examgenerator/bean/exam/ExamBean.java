@@ -1,5 +1,6 @@
 package br.com.devdojo.examgenerator.bean.exam;
 
+import br.com.devdojo.examgenerator.annotation.ExceptionHandler;
 import br.com.devdojo.examgenerator.persistence.dao.ExamDAO;
 import br.com.devdojo.examgenerator.persistence.model.Choice;
 import br.com.devdojo.examgenerator.persistence.model.Question;
@@ -18,14 +19,23 @@ import java.util.Map;
 @ViewScoped
 public class ExamBean implements Serializable {
     private ExamDAO examDAO;
-
+    private String accessCode;
     @Inject
     public ExamBean(ExamDAO examDAO) {
         this.examDAO = examDAO;
     }
 
-    public void init(){
-        Map<Question, List<Choice>> list = examDAO.list("1234");
+    @ExceptionHandler
+    public void accessExam(){
+        Map<Question, List<Choice>> list = examDAO.list(accessCode);
         System.out.println(list);
+    }
+
+    public String getAccessCode() {
+        return accessCode;
+    }
+
+    public void setAccessCode(String accessCode) {
+        this.accessCode = accessCode;
     }
 }
