@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:o="http://omnifaces.org/ui"
+                template="WEB-INF/templates/template.xhtml">
+    <ui:define name="content">
+        <f:metadata>
+            <f:viewParam name="accessCode" value="#{examBean.accessCode}" required="true"
+                         requiredMessage="Use the links to get here"/>
+            <f:viewAction action="#{examBean.init}"/>
+        </f:metadata>
+        <o:form id="form" includeRequestParams="true">
+            <ui:repeat value="#{examBean.questionListMap}" var="entry">
+                <h:outputText value="#{entry.key.title}"/>
+                    <h:selectOneRadio value="#{examBean.multipleChoiceAnswer}"
+                                      required="true"
+                                      requiredMessage="Please answer the question: #{entry.key.title}"
+                                      layout="pageDirection">
+                        <f:selectItems value="#{entry.value}" var="choice"
+                                       itemLabel="#{choice.title}"
+                                       itemValue="#{choice.question.id}##{choice.id}"/>
+                        <f:ajax event="click" listener="#{examBean.storeAnswer}"/>
+                    </h:selectOneRadio>
+            </ui:repeat>
+        </o:form>
+    </ui:define>
+</ui:composition>

@@ -9,6 +9,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,15 +21,56 @@ import java.util.Map;
 public class ExamBean implements Serializable {
     private ExamDAO examDAO;
     private String accessCode;
+    private Map<Question, List<Choice>> questionListMap;
+    private String multipleChoiceAnswer;
+    private Map<Long, Long> questionChoiceIdsMap = new HashMap<>();
+
     @Inject
     public ExamBean(ExamDAO examDAO) {
         this.examDAO = examDAO;
     }
 
     @ExceptionHandler
-    public void accessExam(){
-        Map<Question, List<Choice>> list = examDAO.list(accessCode);
-        System.out.println(list);
+    public void init(){
+        questionListMap = examDAO.list(accessCode);
+    }
+
+    @ExceptionHandler
+    public String accessExam(){
+        return "exam.xhtml?faces-redirect=true&accessCode="+accessCode;
+    }
+
+    public void storeAnswer(){
+        if(multipleChoiceAnswer != null && !multipleChoiceAnswer.isEmpty()){
+            //[0] question.id [1] choice.id
+            String questionChoiceIds[] = multipleChoiceAnswer.split("#");
+            questionChoiceIdsMap.put(Long.parseLong(questionChoiceIds[0]), Long.parseLong(questionChoiceIds[1]));
+            System.out.println(questionChoiceIdsMap);
+        }
+    }
+
+    public String getMultipleChoiceAnswer() {
+        return multipleChoiceAnswer;
+    }
+
+    public void setMultipleChoiceAnswer(String multipleChoiceAnswer) {
+        this.multipleChoiceAnswer = multipleChoiceAnswer;
+    }
+
+    public Map<Long, Long> getQuestionChoiceIdsMap() {
+        return questionChoiceIdsMap;
+    }
+
+    public void setQuestionChoiceIdsMap(Map<Long, Long> questionChoiceIdsMap) {
+        this.questionChoiceIdsMap = questionChoiceIdsMap;
+    }
+
+    public Map<Question, List<Choice>> getQuestionListMap() {
+        return questionListMap;
+    }
+
+    public void setQuestionListMap(Map<Question, List<Choice>> questionListMap) {
+        this.questionListMap = questionListMap;
     }
 
     public String getAccessCode() {
