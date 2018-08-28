@@ -4,6 +4,7 @@ import br.com.devdojo.examgenerator.annotation.ExceptionHandler;
 import br.com.devdojo.examgenerator.persistence.dao.ExamDAO;
 import br.com.devdojo.examgenerator.persistence.model.Choice;
 import br.com.devdojo.examgenerator.persistence.model.Question;
+import org.omnifaces.util.Messages;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -45,8 +46,14 @@ public class ExamBean implements Serializable {
             //[0] question.id [1] choice.id
             String questionChoiceIds[] = multipleChoiceAnswer.split("#");
             questionChoiceIdsMap.put(Long.parseLong(questionChoiceIds[0]), Long.parseLong(questionChoiceIds[1]));
-            System.out.println(questionChoiceIdsMap);
         }
+    }
+
+    @ExceptionHandler
+    public String save(){
+        examDAO.save(accessCode, questionChoiceIdsMap);
+        Messages.create("The assignment was successfully submitted.").flash().add();
+        return "index-student.xhtml?faces-redirect=true";
     }
 
     public String getMultipleChoiceAnswer() {

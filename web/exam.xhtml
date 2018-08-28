@@ -23,6 +23,7 @@
                         <f:ajax event="click" listener="#{examBean.storeAnswer}"/>
                     </h:selectOneRadio>
             </ui:repeat>
+            <h:commandButton action="#{examBean.save}" value="Submit answers"/>
         </o:form>
     </ui:define>
 </ui:composition>
