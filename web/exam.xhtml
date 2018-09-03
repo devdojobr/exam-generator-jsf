@@ -10,7 +10,7 @@
                          requiredMessage="Use the links to get here"/>
             <f:viewAction action="#{examBean.init}"/>
         </f:metadata>
-        <o:form id="form" includeRequestParams="true">
+        <o:form id="form" includeRequestParams="true" rendered="#{examBean.questionListMap != null}">
             <ui:repeat value="#{examBean.questionListMap}" var="entry">
                 <h:outputText value="#{entry.key.title}"/>
                     <h:selectOneRadio value="#{examBean.multipleChoiceAnswer}"

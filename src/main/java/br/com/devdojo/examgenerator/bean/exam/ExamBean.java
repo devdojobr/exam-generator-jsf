@@ -32,17 +32,18 @@ public class ExamBean implements Serializable {
     }
 
     @ExceptionHandler
-    public void init(){
-        questionListMap = examDAO.list(accessCode);
+    public void init() {
+        if (examDAO.studentCanAnswerExam(accessCode))
+            questionListMap = examDAO.list(accessCode);
     }
 
     @ExceptionHandler
-    public String accessExam(){
-        return "exam.xhtml?faces-redirect=true&accessCode="+accessCode;
+    public String accessExam() {
+        return examDAO.studentCanAnswerExam(accessCode) ? "exam.xhtml?faces-redirect=true&accessCode=" + accessCode : null;
     }
 
-    public void storeAnswer(){
-        if(multipleChoiceAnswer != null && !multipleChoiceAnswer.isEmpty()){
+    public void storeAnswer() {
+        if (multipleChoiceAnswer != null && !multipleChoiceAnswer.isEmpty()) {
             //[0] question.id [1] choice.id
             String questionChoiceIds[] = multipleChoiceAnswer.split("#");
             questionChoiceIdsMap.put(Long.parseLong(questionChoiceIds[0]), Long.parseLong(questionChoiceIds[1]));
@@ -50,7 +51,7 @@ public class ExamBean implements Serializable {
     }
 
     @ExceptionHandler
-    public String save(){
+    public String save() {
         examDAO.save(accessCode, questionChoiceIdsMap);
         Messages.create("The assignment was successfully submitted.").flash().add();
         return "index-student.xhtml?faces-redirect=true";
